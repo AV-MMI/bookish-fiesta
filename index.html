@@ -42,7 +42,46 @@
 				</div>
 			</div>
 		</section>
-		<section class="section library-section"></section>
+		<section class="section library-section">
+			<div id="new-book-container" >
+				<button type="button" class="btn new-book-btn">New Book</button>
+			</div>
+
+			<div id="info-container" class="info-container">
+				<h3>books stats</h3>
+				<div id="books-stats-container">
+					<ul>
+						<li><span class="stats-prop">Total books created: </span> <span class="stats-val">11</span></li>
+						<li><span class="stats-prop">Total books removed: </span> <span class="stats-val">11</span></li>
+						<li><span class="stats-prop">Books to read: </span> <span class="stats-val">11</span></li>
+						<li><span class="stats-prop">Books already read: </span> <span class="stats-val">11</span></li>
+					</ul>
+				</div>
+			</div>
+
+			<div id="to-read-container" class="book-display-container already-read-container">
+				<h2>Books to read</h2>
+				<div id="book-container-0" class="books-container">
+					<div class="book-item-container">
+						<div class="book">
+							<button type="button" class="btn toogle-btn"><div class="circle"></div></button>
+							<div class="title">Lorem Ipsum</div>
+							<button type="button" class="btn remove-btn">X</button>
+						</div>
+						<div id="edit-form-container" class="edit-form-container">
+						</div>
+						<div class="edit-book">
+							<button type="button" class="btn edit-btn">edit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="already-read-container" class="book-display-container to-read-container">
+				<h2>Books already read</h2>
+				<div id="book-container-1" class="books-container"></div>
+			</div>
+		</section>
 	</main>
 	<script src="./scripts.js"></script>
 </body>
