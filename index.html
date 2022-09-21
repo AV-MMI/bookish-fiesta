@@ -42,19 +42,19 @@
 				</div>
 			</div>
 		</section>
-		<section class="section library-section">
+		<section id="library-section"class="section library-section">
 			<div id="new-book-container" >
-				<button type="button" class="btn new-book-btn">New Book</button>
+				<button type="button" id="new-book-btn" class="btn new-book-btn">New Book</button>
 			</div>
 
 			<div id="info-container" class="info-container">
 				<h3>books stats</h3>
 				<div id="books-stats-container">
 					<ul>
-						<li><span class="stats-prop">Total books created: </span> <span class="stats-val">11</span></li>
-						<li><span class="stats-prop">Total books removed: </span> <span class="stats-val">11</span></li>
-						<li><span class="stats-prop">Books to read: </span> <span class="stats-val">11</span></li>
-						<li><span class="stats-prop">Books already read: </span> <span class="stats-val">11</span></li>
+						<li><span class="stats-prop">Total books created: </span> <span class="stats-val" id="created-val">11</span></li>
+						<li><span class="stats-prop">Total books removed: </span> <span class="stats-val" id="removed-val">11</span></li>
+						<li><span class="stats-prop">Books to read: </span> <span class="stats-val" id="toRead-val">11</span></li>
+						<li><span class="stats-prop">Books already read: </span> <span class="stats-val" id="haveRead-val">11</span></li>
 					</ul>
 				</div>
 			</div>
@@ -62,38 +62,6 @@
 			<div id="to-read-container" class="book-display-container already-read-container">
 				<h2>Books to read</h2>
 				<div id="book-container-0" class="books-container">
-					<div class="book-item-container">
-						<div class="book">
-							<button type="button" class="btn toggle-btn"><div class="circle"></div></button>
-							<span class="title">Lorem Ipsum</span>
-							<button type="button" class="btn remove-btn">X</button>
-						</div>
-						<div id="edit-form-container" class="edit-form-container">
-							<form action="#">
-								<fieldset>
-									<legend>Update book</legend>
-									<ul>
-										<li>
-											<label for="title-in-up">Title: <strong>*</strong></label>
-											<input type="text" id="title-in-up" required>
-										</li>
-										<li>
-											<label for="author-in-up">Author: <strong>*</strong></label>
-											<input type="text" id="author-in-up" required>
-										</li>
-										<li>
-											<label for="pages-in-up">Pages: <strong>*</strong></label>
-											<input type="number" id="pages-in-up" required>
-										</li>
-									</ul>
-								</fieldset>
-								<button type="button" class="btn update-btn">Update Book</button>
-							</form>
-						</div>
-						<div class="edit-book">
-							<button type="button" class="btn edit-btn">edit</button>
-						</div>
-					</div>
 				</div>
 			</div>
 
