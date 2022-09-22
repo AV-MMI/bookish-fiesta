@@ -43,7 +43,7 @@ function Book(title, author, pages, read){
 		this.title = title;
 		this.author = author;
 		this.pages = pages;
-		this.haveRead = haveRead;
+		this.read = read;
 	}
 }
 
@@ -72,8 +72,6 @@ function displayBooks(bookObj){
 		}
 	}
 }
-
-displayBooks(myLibrary);
 
 function DOMCreateBook(obj){
 	let bookItemContainer = document.createElement('div');
@@ -134,8 +132,9 @@ function DOMCreateBook(obj){
 	let pagesStrong = document.createElement('strong');
 	let pagesInput = document.createElement('input');
 
-
 	editFormContainer.classList.add('edit-form-container');
+	editFormContainer.setAttribute('id', `update-form-${infoObj.created}`);
+
 	legend.textContent = 'Update Book';
 	titleLabel.setAttribute('for', 'title-input-up');
 	titleLabel.textContent = "Title: ";
@@ -146,6 +145,7 @@ function DOMCreateBook(obj){
 
 	updateBtn.setAttribute('type', 'button');
 	updateBtn.classList.add('btn', 'update-btn');
+	updateBtn.textContent = 'Update book';
 
 	titleStrong.textContent = '*';
 	authorStrong.textContent = '*';
@@ -167,7 +167,6 @@ function DOMCreateBook(obj){
 	authorLabel.appendChild(authorStrong);
 	pagesLabel.appendChild(pagesStrong);
 
-	//TODO: append input and label elements to the corresponding li element
 	liTitle.appendChild(titleLabel);
 	liTitle.appendChild(titleInput);
 	liAuthor.appendChild(authorLabel);
@@ -185,12 +184,16 @@ function DOMCreateBook(obj){
 	form.appendChild(fieldset);
 	form.appendChild(updateBtn);
 
+	editFormContainer.appendChild(form);
+
 	//editBtnContainer
 	let editBtnContainer = document.createElement('div');
 	let editBtn = document.createElement('button');
 
 	editBtn.classList.add('btn', 'edit-btn');
 	editBtn.setAttribute('type', 'button');
+	editBtn.setAttribute('id', `update-btn-${infoObj.created}`);
+	editBtn.addEventListener('click', opencloseUpdateForm);
 	editBtn.textContent = 'edit';
 	editBtnContainer.appendChild(editBtn);
 
@@ -329,7 +332,7 @@ function displayModalWindow(event){
 	modalWindow.classList.add('modal-bg');
 
 	let contentContainer = document.createElement('div');
-	contentContainer.classList.add('.modal-newBook-container');
+	contentContainer.classList.add('modal-newBook-container');
 
 	let closeContainer = document.createElement('div');
 	closeContainer.setAttribute('id', 'close-container');
@@ -341,31 +344,89 @@ function displayModalWindow(event){
 	closeBtn.textContent = "X";
 
 	let form = document.createElement('form');
+	let fieldset = document.createElement('fieldset');
+	let legend = document.createElement('legend');
+	legend.textContent = 'New Book';
 	let ul = document.createElement('ul');
+
+
 	let liTitle = document.createElement('li');
 	let titleLabel = document.createElement('label');
+	let titleStrong = document.createElement('strong');
+	titleStrong.textContent = '*';
+	titleLabel.textContent = 'Title:';
+	titleLabel.setAttribute('for', 'title-modal-in');
+
 	let titleInput = document.createElement('input');
+	titleInput.setAttribute('type', 'text');
+	titleInput.setAttribute('minlength', '2');
+	titleInput.setAttribute('maxlength', '25');
+	titleInput.setAttribute('id', 'title-modal-in');
+	titleInput.setAttribute('required', '');
+	titleInput.setAttribute('placeholder', 'Title');
 
 	let liAuthor = document.createElement('li');
 	let authorLabel = document.createElement('label');
+	let authorStrong = document.createElement('strong');
+	authorStrong.textContent = '*';
 	authorLabel.textContent = 'Author:';
+	authorLabel.setAttribute('for', 'author-modal-in');
+
 	let authorInput = document.createElement('input');
+	authorInput.setAttribute('type', 'text');
+	authorInput.setAttribute('minlength', '2');
+	authorInput.setAttribute('maxlength', '15');
+	authorInput.setAttribute('id', 'author-modal-in');
+	authorInput.setAttribute('required', '');
+	authorInput.setAttribute('placeholder', 'Author');
 
 	let liPages = document.createElement('li');
 	let pagesLabel = document.createElement('label');
+	let pagesStrong = document.createElement('strong');
+	pagesStrong.textContent = '*';
 	pagesLabel.textContent = 'Pages:';
+	pagesLabel.setAttribute('for', 'pages-modal-in');
 	let pagesInput = document.createElement('input');
+	pagesInput.setAttribute('type', 'number');
+	pagesInput.setAttribute('min', '1');
+	pagesInput.setAttribute('id', 'pages-modal-in');
+	pagesInput.setAttribute('required', '');
 
 	let liHaveRead = document.createElement('li');
-	let haveReadSpan = document.createElemenet('span');
+	let haveReadSpan = document.createElement('span');
 	haveReadSpan.textContent = "Have you read this book?"
 	let ulHaveRead = document.createElement('ul');
 	let liTrue = document.createElement('li');
 	let trueLabel = document.createElement('label');
+	trueLabel.textContent = 'true: ';
+	trueLabel.setAttribute('for', 'true-input');
 	let trueInput = document.createElement('input');
+	trueInput.setAttribute('type', 'radio');
+	trueInput.setAttribute('id', 'true-input');
+	trueInput.setAttribute('name', 'haveRead');
+
 	let liFalse = document.createElement('li');
 	let falseLabel = document.createElement('label');
+	falseLabel.textContent = 'false: ';
+	falseLabel.setAttribute('for', 'false-input');
 	let falseInput = document.createElement('input');
+	falseInput.setAttribute('type', 'radio');
+	falseInput.setAttribute('id', 'false-input');
+	falseInput.setAttribute('name', 'haveRead');
+	falseInput.setAttribute('checked', '');
+
+	let createBookBtn = document.createElement('button');
+	createBookBtn.setAttribute('type', 'button');
+	createBookBtn.classList.add('new-book-btn');
+	createBookBtn.classList.add('btn');
+	createBookBtn.textContent = "Create book";
+	createBookBtn.addEventListener('click', createBook);
+
+	liTrue.appendChild(trueLabel);
+	liTrue.appendChild(trueInput);
+
+	liFalse.appendChild(falseLabel);
+	liFalse.appendChild(falseInput);
 
 	ulHaveRead.appendChild(liTrue);
 	ulHaveRead.appendChild(liFalse);
@@ -373,14 +434,33 @@ function displayModalWindow(event){
 	liHaveRead.appendChild(haveReadSpan);
 	liHaveRead.appendChild(ulHaveRead);
 
+	titleLabel.appendChild(titleStrong);
+	authorLabel.appendChild(authorStrong);
+	pagesLabel.appendChild(pagesStrong);
+
+	liTitle.appendChild(titleLabel);
+	liTitle.appendChild(titleInput);
+
+	liAuthor.appendChild(authorLabel);
+	liAuthor.appendChild(authorInput);
+
+	liPages.appendChild(pagesLabel);
+	liPages.appendChild(pagesInput);
+
 	ul.appendChild(liTitle);
 	ul.appendChild(liAuthor);
 	ul.appendChild(liPages);
 	ul.appendChild(liHaveRead);
 
-	form.appendChild(ul);
+	fieldset.appendChild(legend);
+	fieldset.appendChild(ul);
+
+	form.appendChild(fieldset)
+
 	closeContainer.appendChild(closeBtn);
 	contentContainer.appendChild(closeContainer);
+	contentContainer.appendChild(form);
+	contentContainer.appendChild(createBookBtn);
 	modalWindow.appendChild(contentContainer);
 
 	librarySection.appendChild(modalWindow);
@@ -389,7 +469,6 @@ function displayModalWindow(event){
 /*
 * EVENT HANDLER
 */
-
 function closeModalWindow(event){
 	let modalWindow = event.target.parentElement.parentElement.parentElement;
 	modalWindow.classList.remove('modal-bg');
@@ -398,3 +477,54 @@ function closeModalWindow(event){
 		modalWindow.children[i].remove();
 	}
 }
+
+/*
+* EVENT HANDLER
+*/
+function createBook(){
+	//Obtain values
+	let title = document.getElementById('title-modal-in');
+	let author = document.getElementById('author-modal-in');
+	let pages = document.getElementById('pages-modal-in');
+	let boolRead = (document.getElementById('true-input').checked == true) ? true : false;
+
+	//constructor
+	let book = new Book(title.value, author.value, pages.value, boolRead);
+
+	//push to library
+	addBookToLibrary(myLibrary, book);
+
+	//display book
+	displayBooks(book);
+
+	//reset inputs
+	title.value = "";
+	author.value = "";
+	pages.value = "";
+}
+
+/*
+* EVENT HANDLER
+*/
+function opencloseUpdateForm(event){
+	let updateForm = document.getElementById(`update-form-${event.target.id[ event.target.id.length - 1 ]}`);
+
+	updateForm.classList.toggle('edit-form-container-active');
+	if(updateForm.classList.contains('edit-form-container-active')){
+		event.target.textContent = 'close';
+	} else {
+		event.target.textContent = 'edit';
+	}
+}
+
+/*
+* EVENT HANDLER
+*/
+function updateBook(){
+	//obtain data
+	//update obj
+	//close cont
+	//update infoObj
+}
+
+displayBooks(myLibrary);
