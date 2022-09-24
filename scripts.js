@@ -77,6 +77,7 @@ function DOMCreateBook(obj){
 	let bookItemContainer = document.createElement('div');
 	bookItemContainer.setAttribute('title', obj.title);
 	bookItemContainer.setAttribute('author', obj.author);
+	bookItemContainer.setAttribute('bookNum', `${infoObj.created}`);
 	//bookItem
 	let book = document.createElement('div');
 	let toggleBtn = document.createElement('button');
@@ -136,15 +137,16 @@ function DOMCreateBook(obj){
 	editFormContainer.setAttribute('id', `update-form-${infoObj.created}`);
 
 	legend.textContent = 'Update Book';
-	titleLabel.setAttribute('for', 'title-input-up');
+	titleLabel.setAttribute('for', `title-input-up${infoObj.created}`);
 	titleLabel.textContent = "Title: ";
-	authorLabel.setAttribute('for', 'author-input-up');
+	authorLabel.setAttribute('for', `author-input-up${infoObj.created}`);
 	authorLabel.textContent = "Author: ";
-	pagesLabel.setAttribute('for', 'pages-input-up');
+	pagesLabel.setAttribute('for', `pages-input-up${infoObj.created}`);
 	pagesLabel.textContent = "Pages: ";
 
 	updateBtn.setAttribute('type', 'button');
 	updateBtn.classList.add('btn', 'update-btn');
+	updateBtn.addEventListener('click', updateBook);
 	updateBtn.textContent = 'Update book';
 
 	titleStrong.textContent = '*';
@@ -153,15 +155,15 @@ function DOMCreateBook(obj){
 
 	titleInput.setAttribute('type', 'text');
 	titleInput.setAttribute('required', '');
-	titleInput.setAttribute('id', 'title-input-up');
+	titleInput.setAttribute('id', `title-input-up${infoObj.created}`);
 
 	authorInput.setAttribute('type', 'text');
 	authorInput.setAttribute('required', '');
-	authorInput.setAttribute('id', 'author-input-up');
+	authorInput.setAttribute('id', `author-input-up${infoObj.created}`);
 
 	pagesInput.setAttribute('type', 'number');
 	pagesInput.setAttribute('required', '');
-	pagesInput.setAttribute('id', 'pages-input-up');
+	pagesInput.setAttribute('id', `pages-input-up${infoObj.created}`);
 
 	titleLabel.appendChild(titleStrong);
 	authorLabel.appendChild(authorStrong);
@@ -293,13 +295,11 @@ function removeBook(event){
 
 //remove bookFrom from array
 function removeFromArr(array, objTitle, objAuthor){
-	console.log(objTitle, objAuthor);
 	let target;
 	let newArr;
 	for(let i = 0; i < array.length; i++){
 		if(array[i].title == objTitle && array[i].author == objAuthor){
 			target = i;
-			console.log(target)
 		}
 	}
 
@@ -520,11 +520,47 @@ function opencloseUpdateForm(event){
 /*
 * EVENT HANDLER
 */
-function updateBook(){
+function updateBook(event){
+	//obtain corresponding book obj.
+	let bookContainer = event.target.parentElement.parentElement.parentElement;
+
 	//obtain data
+	let bookNum;
+	let title = document.getElementById('title-input-up');
+	let author = document.getElementById('author-input-up');
+	let pages = document.getElementById('pages-input-up');
+
 	//update obj
-	//close cont
-	//update infoObj
+	if(title.value !== "" || author.value !=="" || pages.value !== ""){
+		for(let i = 0; i < myLibrary.length; i++){
+			if(myLibrary[i]['title'] == bookContainer.getAttribute('title') && myLibrary[i]['author'] == bookContainer.getAttribute('author')){
+				if(title.value !== ""){
+					myLibrary[i]['title'] = title.value;
+
+					//update book container attributes.
+					bookContainer.setAttribute('title', title.value)
+				}
+				if(author.value !== ""){
+					myLibrary[i]['author'] = author.value;
+
+					//update book container attributes.
+					bookContainer.setAttribute('author', author.value);
+				}
+				if(pages.value !== ""){
+					myLibrary[i]['pages'] = pages.value;
+				}
+
+			}
+		}
+	}
+
+	//update book item textContent
+	bookContainer.children[0].children[1].textContent = title.value;
+
+	//reset input value
+	title.value = '';
+	author.value = '';
+	pages.value = '';
 }
 
 displayBooks(myLibrary);
